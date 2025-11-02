@@ -1,0 +1,528 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EventVerse - College Tech Fest</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+      body {
+        background-color: #0a0a1a;
+        color: #e0e0e0;
+        font-family: 'Courier New', Courier, monospace;
+      }
+      #root {
+        position: relative;
+        z-index: 1;
+      }
+      #particles-js {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 0;
+      }
+      .modal-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 50;
+        display: none; /* Hidden by default */
+      }
+      .modal-content {
+        background-color: #1a1a2e;
+        border: 1px solid #4a4a7f;
+        box-shadow: 0 0 20px rgba(74, 74, 127, 0.5);
+      }
+      .glow-on-hover {
+        border: 2px solid #00ffff;
+        box-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff inset;
+        transition: all 0.3s ease-in-out;
+      }
+      .glow-on-hover:hover {
+        box-shadow: 0 0 15px #00ffff, 0 0 20px #00ffff inset;
+      }
+       .form-input {
+        background-color: rgba(13, 22, 48, 0.8);
+        border: 1px solid #4a4a7f;
+        color: #e0e0e0;
+        caret-color: #00ffff;
+      }
+      .form-input:focus {
+        outline: none;
+        border-color: #00ffff;
+        box-shadow: 0 0 10px #00ffff;
+      }
+      .cyber-button {
+        background-color: transparent;
+        border: 2px solid #00ffff;
+        color: #00ffff;
+        text-shadow: 0 0 5px #00ffff;
+        transition: all 0.3s ease;
+      }
+      .cyber-button:hover {
+        background-color: #00ffff;
+        color: #0a0a1a;
+        box-shadow: 0 0 15px #00ffff;
+      }
+      .active-nav {
+         color: #00ffff;
+         text-shadow: 0 0 8px #00ffff;
+      }
+      .page {
+        display: none; /* Hide pages by default */
+      }
+      .page.active {
+        display: block; /* Show active page */
+      }
+      .animate-fade-in {
+        animation: fadeIn 0.5s ease-in-out;
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/"
+  }
+}
+</script>
+</head>
+<body>
+    <div id="particles-js"></div>
+    <div id="root" class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-black/30 backdrop-blur-sm sticky top-0 z-40 border-b border-cyan-400/20">
+            <div class="container mx-auto px-4">
+                <div class="flex items-center justify-between h-20">
+                    <div class="text-3xl font-bold text-cyan-400 tracking-widest">
+                        EVENT<span class="text-white">VERSE</span>
+                    </div>
+                    <nav id="main-nav" class="hidden md:flex space-x-8">
+                        <a href="#home" data-page="home" class="nav-link text-lg uppercase tracking-wider transition-colors duration-300 hover:text-cyan-400 hover:text-shadow active-nav">Home</a>
+                        <a href="#events" data-page="events" class="nav-link text-lg uppercase tracking-wider transition-colors duration-300 hover:text-cyan-400 hover:text-shadow text-gray-300">Events</a>
+                        <a href="#schedule" data-page="schedule" class="nav-link text-lg uppercase tracking-wider transition-colors duration-300 hover:text-cyan-400 hover:text-shadow text-gray-300">Schedule</a>
+                        <a href="#contact" data-page="contact" class="nav-link text-lg uppercase tracking-wider transition-colors duration-300 hover:text-cyan-400 hover:text-shadow text-gray-300">Contact</a>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-grow container mx-auto px-4 py-8">
+            <!-- Home Page -->
+            <section id="home-page" class="page active animate-fade-in">
+                <div class="text-center flex flex-col items-center justify-center min-h-[calc(100vh-14rem)]">
+                    <h1 class="text-6xl md:text-8xl font-black text-white uppercase tracking-wider">
+                        Welcome to <span class="text-cyan-400">EventVerse</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl text-gray-300 mt-4 max-w-3xl">
+                        The ultimate college tech fest. Dive into a universe of code, gaming, and innovation.
+                    </p>
+                    <button id="explore-events-btn" class="mt-10 cyber-button text-xl font-bold py-4 px-8 rounded-lg">
+                        Explore Events
+                    </button>
+                </div>
+            </section>
+
+            <!-- Events Page -->
+            <section id="events-page" class="page animate-fade-in">
+                <h2 class="text-5xl font-bold text-center mb-12 text-cyan-400">Events</h2>
+                <div id="event-filters" class="flex justify-center mb-8 space-x-2 md:space-x-4">
+                    <button data-filter="All" class="filter-btn px-4 py-2 text-sm md:text-base rounded-md transition-all duration-300 bg-cyan-400 text-black font-bold">All</button>
+                    <button data-filter="Coding" class="filter-btn px-4 py-2 text-sm md:text-base rounded-md transition-all duration-300 cyber-button">Coding</button>
+                    <button data-filter="Gaming" class="filter-btn px-4 py-2 text-sm md:text-base rounded-md transition-all duration-300 cyber-button">Gaming</button>
+                    <button data-filter="Workshop" class="filter-btn px-4 py-2 text-sm md:text-base rounded-md transition-all duration-300 cyber-button">Workshop</button>
+                    <button data-filter="Talk" class="filter-btn px-4 py-2 text-sm md:text-base rounded-md transition-all duration-300 cyber-button">Talk</button>
+                </div>
+                <div id="events-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Event cards will be injected here -->
+                </div>
+            </section>
+
+            <!-- Schedule Page -->
+            <section id="schedule-page" class="page animate-fade-in">
+                <h2 class="text-5xl font-bold text-center mb-12 text-cyan-400">Event Schedule</h2>
+                <div class="max-w-4xl mx-auto bg-gray-900/50 backdrop-blur-sm border border-cyan-400/30 rounded-lg p-8 glow-on-hover">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead>
+                                <tr class="border-b border-cyan-400/50">
+                                    <th class="p-4 text-lg text-cyan-400">Time</th>
+                                    <th class="p-4 text-lg text-cyan-400">Event</th>
+                                    <th class="p-4 text-lg text-cyan-400">Venue</th>
+                                </tr>
+                            </thead>
+                            <tbody id="schedule-body">
+                                <!-- Schedule items will be injected here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact Page -->
+            <section id="contact-page" class="page animate-fade-in">
+                <h2 class="text-5xl font-bold text-center mb-12 text-cyan-400">Contact Us</h2>
+                <div id="contact-form-container" class="max-w-2xl mx-auto bg-gray-900/50 backdrop-blur-sm border border-cyan-400/30 rounded-lg p-8 glow-on-hover">
+                    <form id="contact-form">
+                        <p class="text-center text-gray-300 mb-8">Have a question? Drop us a line.</p>
+                        <div class="mb-6">
+                            <label for="name" class="block text-cyan-400 mb-2">Full Name</label>
+                            <input type="text" id="name" name="name" class="w-full form-input p-3 rounded-md" required />
+                        </div>
+                        <div class="mb-6">
+                            <label for="email" class="block text-cyan-400 mb-2">Email</label>
+                            <input type="email" id="email" name="email" class="w-full form-input p-3 rounded-md" required />
+                        </div>
+                        <div class="mb-6">
+                            <label for="message" class="block text-cyan-400 mb-2">Message</label>
+                            <textarea id="message" name="message" rows="4" class="w-full form-input p-3 rounded-md" required></textarea>
+                        </div>
+                        <button type="submit" class="w-full cyber-button text-lg font-bold py-3 px-6 rounded-lg">
+                            Submit Query
+                        </button>
+                    </form>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-black/30 border-t border-cyan-400/20 py-6">
+            <div class="container mx-auto px-4 text-center text-gray-400">
+                <p>&copy; 2024 EventVerse. All rights reserved.</p>
+                <div class="flex justify-center space-x-6 mt-4">
+                    <a href="#" class="hover:text-cyan-400 transition-colors"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="hover:text-cyan-400 transition-colors"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="hover:text-cyan-400 transition-colors"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+    <!-- Event Detail Modal -->
+    <div id="event-detail-modal" class="modal-backdrop">
+        <div class="modal-content w-11/12 md:w-3/4 lg:w-1/2 max-w-4xl rounded-lg p-8 relative" >
+            <button id="close-detail-modal-btn" class="absolute top-4 right-4 text-2xl text-gray-400 hover:text-cyan-400">&times;</button>
+            <div class="flex flex-col md:flex-row gap-8">
+                <img id="detail-modal-img" src="" alt="Event Image" class="w-full md:w-1/3 h-auto object-cover rounded-md" />
+                <div class="flex-grow">
+                    <h2 id="detail-modal-title" class="text-4xl font-bold text-cyan-400 mb-4"></h2>
+                    <p id="detail-modal-desc" class="text-lg text-gray-300 mb-6"></p>
+                    <div class="grid grid-cols-2 gap-4 text-lg">
+                        <p><i class="fas fa-calendar-alt text-cyan-400 mr-2"></i><span id="detail-modal-date"></span></p>
+                        <p><i class="fas fa-clock text-cyan-400 mr-2"></i><span id="detail-modal-time"></span></p>
+                        <p><i class="fas fa-map-marker-alt text-cyan-400 mr-2"></i><span id="detail-modal-location"></span></p>
+                        <p><i class="fas fa-tag text-cyan-400 mr-2"></i><span id="detail-modal-category"></span></p>
+                    </div>
+                    <button id="detail-modal-register-btn" class="mt-8 w-full cyber-button text-lg font-bold py-3 px-6 rounded-lg">
+                        Register Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration Modal -->
+    <div id="registration-modal" class="modal-backdrop">
+        <div class="modal-content w-11/12 md:w-1/2 lg:w-1/3 max-w-lg rounded-lg p-8 relative">
+            <button id="close-register-modal-btn" class="absolute top-4 right-4 text-2xl text-gray-400 hover:text-cyan-400">&times;</button>
+            <div id="registration-success-message" class="hidden text-center p-8 animate-fade-in">
+                <i class="fas fa-satellite-dish text-5xl text-cyan-400 mb-4 animate-pulse"></i>
+                <h3 class="text-2xl font-bold text-white">Transmission Received!</h3>
+                <p class="text-gray-300 mt-2">You are now registered for <span id="reg-success-event-title" class="text-cyan-400 font-bold"></span>. See you in the Verse!</p>
+                <button id="reg-success-close-btn" class="mt-6 cyber-button py-2 px-6 rounded-md">Close</button>
+            </div>
+            <div id="registration-form-container">
+                <h2 class="text-3xl font-bold text-cyan-400 mb-2 text-center">Register for</h2>
+                <h3 id="reg-modal-title" class="text-xl text-white mb-6 text-center"></h3>
+                <form id="registration-form" noValidate>
+                    <div class="mb-4">
+                        <label for="reg-name" class="block text-cyan-400 mb-2">Full Name</label>
+                        <input type="text" id="reg-name" name="name" class="w-full form-input p-3 rounded-md" required />
+                        <p class="error-msg text-red-400 text-sm mt-1 hidden">Name is required</p>
+                    </div>
+                    <div class="mb-4">
+                        <label for="reg-email" class="block text-cyan-400 mb-2">Email</label>
+                        <input type="email" id="reg-email" name="email" class="w-full form-input p-3 rounded-md" required />
+                        <p class="error-msg text-red-400 text-sm mt-1 hidden">Please enter a valid email</p>
+                    </div>
+                    <div class="mb-6">
+                        <label for="reg-college" class="block text-cyan-400 mb-2">College</label>
+                        <input type="text" id="reg-college" name="college" class="w-full form-input p-3 rounded-md" required />
+                        <p class="error-msg text-red-400 text-sm mt-1 hidden">College name is required</p>
+                    </div>
+                    <button type="submit" class="w-full cyber-button text-lg font-bold py-3 px-6 rounded-lg">
+                        Confirm Registration
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        // --- DATA ---
+        const EVENTS = [
+          { id: 1, title: 'Code Genesis', category: 'Coding', date: '2024-10-26', time: '09:00 AM', location: 'Lab A', description: 'The ultimate competitive programming challenge. Solve complex algorithmic problems and race against the clock. Prizes for the top 3 coders!', image: 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzNTkyfDB8MXxzZWFyY2h8Nnx8Y29kaW5nfGVufDB8fHx8MTcxNzE5MjU4NHww&ixlib=rb-4.0.3&q=80&w=1080' },
+          { id: 2, title: 'Cyberpunk Showdown', category: 'Gaming', date: '2024-10-26', time: '11:00 AM', location: 'Auditorium', description: 'A high-stakes Valorant tournament. Form your squad and compete for glory and exclusive gaming gear. Spectators welcome!', image: 'https://images.unsplash.com/photo-1588827928292-2c5f657a73a3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzNTkyfDB8MXxzZWFyY2h8MTB8fGdhbWluZ3xlbnwwfHx8fDE3MTcxOTI2MDl8MA&ixlib=rb-4.0.3&q=80&w=1080' },
+          { id: 3, title: 'Intro to Quantum Computing', category: 'Workshop', date: '2024-10-27', time: '01:00 PM', location: 'Room 101', description: 'A hands-on workshop covering the fundamentals of quantum mechanics and computing. No prior experience needed. Laptops required.', image: 'https://images.unsplash.com/photo-1635070045099-a314a5a855f6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzNTkyfDB8MXxzZWFyY2h8Mnx8cXVhbnR1bSUyMGNvbXB1dGluZ3xlbnwwfHx8fDE3MTcxOTI2Mzd8MA&ixlib=rb-4.0.3&q=80&w=1080' },
+          { id: 4, title: 'The Future of AI', category: 'Talk', date: '2024-10-27', time: '04:00 PM', location: 'Main Hall', description: 'A keynote speech by industry expert Dr. Evelyn Reed on the future of artificial intelligence and its impact on society.', image: 'https://images.unsplash.com/photo-1677756119517-756a188d2d94?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzNTkyfDB8MXxzZWFyY2h8NHx8YWl8ZW58MHx8fHwxNzE3MTkyNjYyfDA&ixlib=rb-4.0.3&q=80&w=1080' },
+        ];
+
+        const SCHEDULE = [
+            { time: '09:00 AM - 11:00 AM', event: 'Code Genesis', venue: 'Lab A' },
+            { time: '11:00 AM - 01:00 PM', event: 'Cyberpunk Showdown', venue: 'Auditorium' },
+            { time: '01:00 PM - 03:00 PM', event: 'Intro to Quantum Computing', venue: 'Room 101' },
+            { time: '04:00 PM - 05:00 PM', event: 'The Future of AI', venue: 'Main Hall' },
+        ];
+
+        // --- STATE ---
+        let currentEventId = null;
+
+        // --- DOM ELEMENTS ---
+        const pages = document.querySelectorAll('.page');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const eventsGrid = document.getElementById('events-grid');
+        const eventFilters = document.getElementById('event-filters');
+        const scheduleBody = document.getElementById('schedule-body');
+        const exploreEventsBtn = document.getElementById('explore-events-btn');
+
+        // Detail Modal Elements
+        const detailModal = document.getElementById('event-detail-modal');
+        const closeDetailModalBtn = document.getElementById('close-detail-modal-btn');
+        const detailRegisterBtn = document.getElementById('detail-modal-register-btn');
+        
+        // Registration Modal Elements
+        const registrationModal = document.getElementById('registration-modal');
+        const closeRegisterModalBtn = document.getElementById('close-register-modal-btn');
+        const registrationForm = document.getElementById('registration-form');
+        const regFormContainer = document.getElementById('registration-form-container');
+        const regSuccessMessage = document.getElementById('registration-success-message');
+        const regSuccessCloseBtn = document.getElementById('reg-success-close-btn');
+
+        // Contact Form Elements
+        const contactForm = document.getElementById('contact-form');
+        const contactFormContainer = document.getElementById('contact-form-container');
+
+        // --- PAGE NAVIGATION ---
+        const showPage = (pageId) => {
+            pages.forEach(page => {
+                page.classList.toggle('active', page.id === `${pageId}-page`);
+            });
+            navLinks.forEach(link => {
+                link.classList.toggle('active-nav', link.dataset.page === pageId);
+                link.classList.toggle('text-gray-300', link.dataset.page !== pageId);
+            });
+            window.scrollTo(0, 0);
+        };
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const pageId = link.dataset.page;
+                showPage(pageId);
+            });
+        });
+
+        exploreEventsBtn.addEventListener('click', () => showPage('events'));
+        
+        // --- RENDER FUNCTIONS ---
+        const renderEvents = (filter = 'All') => {
+            const filteredEvents = filter === 'All' ? EVENTS : EVENTS.filter(event => event.category === filter);
+            eventsGrid.innerHTML = ''; // Clear previous events
+            filteredEvents.forEach(event => {
+                const card = document.createElement('div');
+                card.className = "bg-gray-900/50 backdrop-blur-sm border border-cyan-400/30 rounded-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300 ease-in-out glow-on-hover";
+                card.innerHTML = `
+                    <img src="${event.image}" alt="${event.title}" class="w-full h-48 object-cover" />
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-cyan-400 mb-2">${event.title}</h3>
+                        <p class="text-gray-400 mb-4">${event.category}</p>
+                        <button data-event-id="${event.id}" class="know-more-btn w-full cyber-button py-2 px-4 rounded-md">
+                            Know More
+                        </button>
+                    </div>
+                `;
+                eventsGrid.appendChild(card);
+            });
+        };
+
+        const renderSchedule = () => {
+            scheduleBody.innerHTML = '';
+            SCHEDULE.forEach(item => {
+                const row = document.createElement('tr');
+                row.className = "border-b border-gray-700/50 hover:bg-cyan-400/10";
+                row.innerHTML = `
+                    <td class="p-4">${item.time}</td>
+                    <td class="p-4 font-semibold">${item.event}</td>
+                    <td class="p-4">${item.venue}</td>
+                `;
+                scheduleBody.appendChild(row);
+            });
+        };
+
+        // --- EVENT FILTERING ---
+        eventFilters.addEventListener('click', (e) => {
+            if (e.target.tagName === 'BUTTON') {
+                const filter = e.target.dataset.filter;
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('bg-cyan-400', 'text-black', 'font-bold');
+                    btn.classList.add('cyber-button');
+                });
+                e.target.classList.add('bg-cyan-400', 'text-black', 'font-bold');
+                e.target.classList.remove('cyber-button');
+                renderEvents(filter);
+            }
+        });
+
+        // --- MODAL LOGIC ---
+        const openModal = (modal) => {
+          modal.style.display = 'flex';
+        }
+        const closeModal = (modal) => {
+          modal.style.display = 'none';
+        }
+        
+        const openDetailModal = (eventId) => {
+            const event = EVENTS.find(e => e.id === eventId);
+            if (!event) return;
+            currentEventId = event.id;
+            document.getElementById('detail-modal-img').src = event.image;
+            document.getElementById('detail-modal-title').textContent = event.title;
+            document.getElementById('detail-modal-desc').textContent = event.description;
+            document.getElementById('detail-modal-date').textContent = event.date;
+            document.getElementById('detail-modal-time').textContent = event.time;
+            document.getElementById('detail-modal-location').textContent = event.location;
+            document.getElementById('detail-modal-category').textContent = event.category;
+            openModal(detailModal);
+        }
+        
+        const openRegistrationModal = (eventId) => {
+            const event = EVENTS.find(e => e.id === eventId);
+            if (!event) return;
+            currentEventId = event.id;
+            // Reset form
+            registrationForm.reset();
+            document.querySelectorAll('#registration-form .error-msg').forEach(msg => msg.classList.add('hidden'));
+            regFormContainer.classList.remove('hidden');
+            regSuccessMessage.classList.add('hidden');
+            // Populate title
+            document.getElementById('reg-modal-title').textContent = event.title;
+            document.getElementById('reg-success-event-title').textContent = event.title;
+
+            closeModal(detailModal);
+            openModal(registrationModal);
+        }
+
+        // Event listeners for opening modals
+        eventsGrid.addEventListener('click', (e) => {
+            if (e.target.classList.contains('know-more-btn')) {
+                const eventId = parseInt(e.target.dataset.eventId);
+                openDetailModal(eventId);
+            }
+        });
+        detailRegisterBtn.addEventListener('click', () => {
+            if (currentEventId) openRegistrationModal(currentEventId);
+        });
+
+        // Event listeners for closing modals
+        closeDetailModalBtn.addEventListener('click', () => closeModal(detailModal));
+        detailModal.addEventListener('click', (e) => {
+            if (e.target === detailModal) closeModal(detailModal);
+        });
+        closeRegisterModalBtn.addEventListener('click', () => closeModal(registrationModal));
+        registrationModal.addEventListener('click', (e) => {
+            if (e.target === registrationModal) closeModal(registrationModal);
+        });
+        regSuccessCloseBtn.addEventListener('click', () => closeModal(registrationModal));
+
+
+        // --- FORM HANDLING ---
+
+        // Registration Form Validation & Submission
+        registrationForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            let isValid = true;
+            const nameInput = document.getElementById('reg-name');
+            const emailInput = document.getElementById('reg-email');
+            const collegeInput = document.getElementById('reg-college');
+            
+            // Clear previous errors
+            document.querySelectorAll('#registration-form .error-msg').forEach(msg => msg.classList.add('hidden'));
+
+            // Name validation
+            if (!nameInput.value.trim()) {
+                nameInput.nextElementSibling.classList.remove('hidden');
+                isValid = false;
+            }
+            // Email validation
+            const emailRegex = /\S+@\S+\.\S+/;
+            if (!emailInput.value.trim() || !emailRegex.test(emailInput.value)) {
+                emailInput.nextElementSibling.classList.remove('hidden');
+                isValid = false;
+            }
+            // College validation
+            if (!collegeInput.value.trim()) {
+                collegeInput.nextElementSibling.classList.remove('hidden');
+                isValid = false;
+            }
+
+            if (isValid) {
+                console.log('Registration Submitted:', {
+                    event: EVENTS.find(ev => ev.id === currentEventId).title,
+                    name: nameInput.value,
+                    email: emailInput.value,
+                    college: collegeInput.value,
+                });
+                regFormContainer.classList.add('hidden');
+                regSuccessMessage.classList.remove('hidden');
+            }
+        });
+
+        // Contact Form Submission
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(contactForm);
+            console.log('Contact Query:', Object.fromEntries(formData.entries()));
+            
+            contactFormContainer.innerHTML = `
+                <div class="text-center p-8 animate-fade-in">
+                    <i class="fas fa-check-circle text-5xl text-cyan-400 mb-4"></i>
+                    <h3 class="text-2xl font-bold text-white">Query Received!</h3>
+                    <p class="text-gray-300 mt-2">Thank you for reaching out. We'll get back to you shortly.</p>
+                </div>
+            `;
+        });
+
+
+        // --- INITIALIZATION ---
+        renderEvents();
+        renderSchedule();
+        showPage('home');
+
+        // Particle.js configuration
+        particlesJS('particles-js', {
+          "particles": { "number": { "value": 80, "density": { "enable": true, "value_area": 800 } }, "color": { "value": "#00ffff" }, "shape": { "type": "circle" }, "opacity": { "value": 0.5, "random": false }, "size": { "value": 3, "random": true }, "line_linked": { "enable": true, "distance": 150, "color": "#00ffff", "opacity": 0.4, "width": 1 }, "move": { "enable": true, "speed": 2, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false } },
+          "interactivity": { "detect_on": "canvas", "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" }, "resize": true }, "modes": { "repulse": { "distance": 100, "duration": 0.4 }, "push": { "particles_nb": 4 } } },
+          "retina_detect": true
+        });
+      });
+    </script>
+</body>
+</html>
