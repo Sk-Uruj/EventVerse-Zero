@@ -1,0 +1,1596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EventVerse - College Tech Fest</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-bg: #0d0d1a;
+            --color-primary: #00ffff; /* Cyan */
+            --color-secondary: #ff00ff; /* Magenta */
+            --color-accent: #ffff00; /* Yellow */
+            --color-text: #e0e0e0;
+            --color-text-dark: #a0a0a0;
+            --font-heading: 'Orbitron', sans-serif;
+            --font-body: 'Roboto Mono', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 0;
+            z-index: 1000;
+            background: rgba(13, 13, 26, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--color-primary);
+        }
+
+        .main-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            color: var(--color-primary);
+            text-shadow: 0 0 5px var(--color-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+            animation: logoGlow 2s ease-in-out infinite;
+        }
+        
+        .logo-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--color-bg);
+        }
+        
+        @keyframes logoGlow {
+            0%, 100% {
+                box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 25px rgba(255, 0, 255, 0.7);
+            }
+        }
+
+        .main-nav a {
+            color: var(--color-text);
+            text-decoration: none;
+            margin-left: 20px;
+            transition: color 0.3s, text-shadow 0.3s, border-bottom-color 0.3s;
+            font-weight: bold;
+            padding-bottom: 5px;
+            border-bottom: 2px solid transparent;
+        }
+
+        .main-nav a:hover, .main-nav a.active {
+            color: var(--color-primary);
+            text-shadow: 0 0 5px var(--color-primary);
+            border-bottom-color: var(--color-primary);
+        }
+
+        /* Hero Section */
+        #home {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            padding-top: 80px; /* Header height */
+            overflow: hidden;
+        }
+        
+        #particle-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-content h1 {
+            font-family: var(--font-heading);
+            font-size: 4rem;
+            color: var(--color-primary);
+            text-shadow: 0 0 10px var(--color-primary), 0 0 20px var(--color-secondary);
+            margin-bottom: 20px;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border: 2px solid var(--color-primary);
+            color: var(--color-primary);
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            background-color: transparent;
+        }
+
+        .btn:hover {
+            background-color: var(--color-primary);
+            color: var(--color-bg);
+            box-shadow: 0 0 15px var(--color-primary);
+        }
+        
+        .btn-secondary {
+             border-color: var(--color-secondary);
+             color: var(--color-secondary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--color-secondary);
+            color: var(--color-bg);
+            box-shadow: 0 0 15px var(--color-secondary);
+        }
+
+
+        /* Sections */
+        .section {
+            padding: 100px 0;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 50px;
+            color: var(--color-primary);
+        }
+
+        /* Events Section */
+        .filters-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+
+        .filter-btn {
+            background: none;
+            border: 1px solid var(--color-secondary);
+            color: var(--color-secondary);
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: var(--font-body);
+            border-radius: 8px;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background-color: var(--color-secondary);
+            color: var(--color-bg);
+            box-shadow: 0 0 10px var(--color-secondary);
+        }
+        
+        #sort-events {
+            background: none;
+            border: 1px solid var(--color-primary);
+            color: var(--color-primary);
+            padding: 8px;
+            font-family: var(--font-body);
+            border-radius: 8px;
+        }
+        #sort-events option {
+            background-color: var(--color-bg);
+            color: var(--color-text);
+        }
+
+        #event-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .event-card {
+            background-color: rgba(0, 255, 255, 0.05);
+            border: 1px solid var(--color-primary);
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 255, 255, 0.3);
+        }
+        
+        .event-card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .event-card-icon {
+            width: 40px;
+            height: 40px;
+            fill: var(--color-primary);
+        }
+
+        .event-card h3 {
+            font-family: var(--font-heading);
+            color: var(--color-primary);
+            margin-bottom: 5px;
+        }
+        
+        .event-card-info {
+             font-size: 0.9rem;
+        }
+
+        .event-card p {
+            color: var(--color-text-dark);
+            flex-grow: 1;
+            font-size: 0.9rem;
+        }
+
+        /* Schedule Section */
+        .schedule-cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+        
+        .schedule-card {
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.05), rgba(255, 0, 255, 0.05));
+            border: 2px solid var(--color-primary);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+        
+        .schedule-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.4);
+            border-color: var(--color-secondary);
+        }
+        
+        .schedule-card-poster {
+            width: 100%;
+            height: 220px;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            border-radius: 13px 13px 0 0;
+        }
+        
+        .schedule-card-poster img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        
+        .schedule-card-poster::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent 0%, rgba(13, 13, 26, 0.7) 100%);
+            z-index: 1;
+        }
+        
+        .schedule-card-content {
+            padding: 20px;
+        }
+        
+        .schedule-card-title {
+            font-family: var(--font-heading);
+            font-size: 1.4rem;
+            color: var(--color-primary);
+            margin-bottom: 10px;
+        }
+        
+        .schedule-card-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            color: var(--color-text-dark);
+            font-size: 0.9rem;
+        }
+        
+        .schedule-card-info-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .schedule-card-info-item strong {
+            color: var(--color-secondary);
+            min-width: 70px;
+        }
+        
+        .schedule-card-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(255, 0, 255, 0.2);
+            border: 1px solid var(--color-secondary);
+            border-radius: 12px;
+            font-size: 0.8rem;
+            color: var(--color-secondary);
+            margin-top: 10px;
+        }
+        
+        .table-wrapper {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            box-shadow: 0 8px 32px 0 rgba(0, 255, 255, 0.15);
+            padding: 25px;
+            margin-top: 40px;
+            overflow: hidden;
+        }
+        
+        #schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: transparent;
+        }
+
+        #schedule-table th, #schedule-table td {
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            padding: 15px;
+            text-align: left;
+            backdrop-filter: blur(5px);
+        }
+
+        #schedule-table th {
+            font-family: var(--font-heading);
+            color: var(--color-primary);
+            background: rgba(0, 255, 255, 0.1);
+            text-shadow: 0 0 10px var(--color-primary);
+        }
+        
+        #schedule-table tbody tr {
+            transition: background 0.3s;
+        }
+        
+        #schedule-table tbody tr:hover {
+            background: rgba(255, 0, 255, 0.1);
+        }
+
+        /* Contact Section */
+        .contact-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: flex-start;
+        }
+        
+        /* Registration Modal */
+        #registration-modal .modal-content {
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+        
+        .registration-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .registration-form .form-group {
+            margin-bottom: 0;
+        }
+        
+        #registration-event-title {
+            color: var(--color-primary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .contact-info, #contact-form-container {
+             max-width: 600px;
+             margin: 0 auto;
+             width: 100%;
+        }
+        
+        #contact-form-container {
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.05), rgba(255, 0, 255, 0.05));
+            border: 2px solid var(--color-primary);
+            padding: 0;
+            box-shadow: 0 5px 25px rgba(0, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            max-height: 490px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        #contact-form-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-secondary), var(--color-accent));
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        .contact-info h3 {
+            font-family: var(--font-heading);
+            color: var(--color-secondary);
+            margin-bottom: 15px;
+        }
+        
+        #contact-form-container h3 {
+            font-family: var(--font-heading);
+            color: var(--color-secondary);
+            margin: 0;
+            padding: 20px 35px;
+            text-align: center;
+            font-size: 1.8rem;
+            text-shadow: 0 0 10px var(--color-secondary);
+            background: rgba(0, 0, 0, 0.3);
+            flex-shrink: 0;
+        }
+        
+        .contact-info p {
+             margin-bottom: 10px;
+        }
+        
+        .map-container {
+             border: 2px solid var(--color-secondary);
+             margin-top: 20px;
+        }
+
+        .form-scroll-container {
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 25px 35px 35px 35px;
+            flex: 1;
+        }
+        
+        .form-scroll-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .form-scroll-container::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 1px solid var(--color-primary);
+        }
+        
+        .form-scroll-container::-webkit-scrollbar-thumb {
+            background: var(--color-primary);
+            border-radius: 4px;
+        }
+        
+        .form-scroll-container::-webkit-scrollbar-thumb:hover {
+            background: var(--color-secondary);
+        }
+        
+        #contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            margin-bottom: 5px;
+            color: var(--color-text-dark);
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--color-primary);
+            padding: 10px;
+            color: var(--color-text);
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+        }
+        
+        .form-group select {
+            cursor: pointer;
+        }
+        
+        .form-group select option {
+            background-color: var(--color-bg);
+            color: var(--color-text);
+        }
+        
+        .form-group input::placeholder, .form-group textarea::placeholder {
+            color: var(--color-text-dark);
+            opacity: 0.7;
+        }
+
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none;
+            box-shadow: 0 0 10px var(--color-primary);
+            border-color: var(--color-secondary);
+        }
+        
+        #form-feedback {
+            text-align: center;
+            padding: 15px;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        #form-feedback.success {
+            background-color: rgba(0, 255, 255, 0.2);
+            color: var(--color-primary);
+            border: 1px solid var(--color-primary);
+        }
+
+        /* Modal */
+        .modal {
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--color-bg);
+            padding: 40px;
+            border: 2px solid var(--color-primary);
+            box-shadow: 0 0 25px var(--color-primary);
+            width: 90%;
+            max-width: 700px;
+            position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            color: var(--color-text);
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .modal-content h2 {
+            font-family: var(--font-heading);
+            color: var(--color-primary);
+            margin-bottom: 20px;
+        }
+
+        .modal-content h3 {
+            font-family: var(--font-heading);
+            color: var(--color-secondary);
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .modal-actions {
+            margin-top: 30px;
+        }
+        
+        /* About Section */
+        #about {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #about-particle-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        .about-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .about-intro {
+            text-align: center;
+            margin-bottom: 60px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--color-text);
+        }
+        
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        .about-card {
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.05), rgba(255, 0, 255, 0.05));
+            border: 1px solid var(--color-primary);
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .about-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 255, 255, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .about-card:hover::before {
+            opacity: 1;
+        }
+        
+        .about-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3);
+            border-color: var(--color-secondary);
+        }
+        
+        .about-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 10px var(--color-primary));
+        }
+        
+        .about-card h3 {
+            font-family: var(--font-heading);
+            color: var(--color-primary);
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .about-card p {
+            color: var(--color-text-dark);
+            line-height: 1.7;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .stat-box {
+            text-align: center;
+            padding: 25px;
+            border: 2px solid var(--color-secondary);
+            background: rgba(255, 0, 255, 0.05);
+            transition: all 0.3s;
+        }
+        
+        .stat-box:hover {
+            background: rgba(255, 0, 255, 0.1);
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.4);
+        }
+        
+        .stat-number {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            color: var(--color-secondary);
+            text-shadow: 0 0 10px var(--color-secondary);
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 0.95rem;
+            color: var(--color-text);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Responsive */
+        @media(max-width: 768px) {
+            .hero-content h1 {
+                font-size: 3rem;
+            }
+            .contact-wrapper {
+                grid-template-columns: 1fr;
+            }
+             .main-nav {
+                display: none; /* Simple hide for mobile, can be replaced with hamburger */
+            }
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <a href="#home" class="logo">
+                <div class="logo-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5zm0 2.18l8 4V17c0 4.51-3.08 8.71-8 9.91-4.92-1.2-8-5.4-8-9.91V8.18l8-4zM12 6L7 8.5v5.5c0 2.76 1.92 5.37 5 6.24 3.08-.87 5-3.48 5-6.24V8.5L12 6zm0 2.09l3 1.5v4.41c0 1.84-1.28 3.58-3 4.16-1.72-.58-3-2.32-3-4.16V9.59l3-1.5z"/>
+                    </svg>
+                </div>
+                <span>EventVerse</span>
+            </a>
+            <nav class="main-nav">
+                <a href="#home" class="active">Home</a>
+                <a href="#events">Events</a>
+                <a href="#schedule">Schedule</a>
+                <a href="#contact">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="section">
+            <canvas id="particle-canvas"></canvas>
+            <div class="hero-content">
+                <h1>Welcome to EventVerse</h1>
+                <p>The future of tech fests is here. Explore, compete, and innovate.</p>
+                <a href="#events" class="btn">Explore Events</a>
+            </div>
+        </section>
+        
+        <!-- About Us Section (shown on home page only) -->
+        <section id="about" class="section" style="display: none;">
+            <canvas id="about-particle-canvas"></canvas>
+            <div class="container about-container">
+                <h2 class="section-title">About EventVerse</h2>
+                <div class="about-intro">
+                    <p>EventVerse is more than just a tech fest—it's a convergence of innovation, creativity, and collaboration. 
+                    Designed to be the ultimate hub for college tech enthusiasts, we bring together the brightest minds to compete, 
+                    learn, and showcase their talents across multiple domains.</p>
+                </div>
+                
+                <div class="about-grid">
+                    <div class="about-card">
+                        <div class="about-icon">🚀</div>
+                        <h3>Our Mission</h3>
+                        <p>To create a dynamic platform that fosters technological excellence, encourages creative thinking, 
+                        and provides students with opportunities to showcase their skills on a grand stage.</p>
+                    </div>
+                    
+                    <div class="about-card">
+                        <div class="about-icon">🎯</div>
+                        <h3>Our Vision</h3>
+                        <p>To establish EventVerse as the premier tech fest that bridges the gap between academic learning 
+                        and industry innovation, creating future leaders in technology.</p>
+                    </div>
+                    
+                    <div class="about-card">
+                        <div class="about-icon">💡</div>
+                        <h3>Our Values</h3>
+                        <p>Innovation, collaboration, inclusivity, and excellence drive everything we do. We believe in 
+                        creating an environment where every participant can thrive and make meaningful connections.</p>
+                    </div>
+                </div>
+                
+                <div class="stats-container">
+                    <div class="stat-box">
+                        <span class="stat-number">2000+</span>
+                        <span class="stat-label">Participants</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-number">50+</span>
+                        <span class="stat-label">Events</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-number">$10K+</span>
+                        <span class="stat-label">Prize Pool</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-number">100+</span>
+                        <span class="stat-label">Colleges</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="events" class="section">
+            <div class="container">
+                <h2 class="section-title">Events Catalog</h2>
+                <div class="filters-container">
+                    <div id="filter-bar">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="Technical">Technical</button>
+                        <button class="filter-btn" data-filter="Cultural">Cultural</button>
+                        <button class="filter-btn" data-filter="Gaming">Gaming</button>
+                        <button class="filter-btn" data-filter="Workshop">Workshop</button>
+                    </div>
+                     <select id="sort-events" aria-label="Sort events">
+                        <option value="default">Sort by...</option>
+                        <option value="name-asc">Name (A-Z)</option>
+                        <option value="time-asc">Time</option>
+                    </select>
+                </div>
+                <div id="event-grid">
+                    <!-- Event cards will be injected by JS -->
+                </div>
+            </div>
+        </section>
+
+        <section id="schedule" class="section">
+            <div class="container">
+                <h2 class="section-title">Fest Schedule</h2>
+                <div class="filters-container" id="schedule-filter-bar">
+                     <button class="filter-btn active" data-day="1">Day 1</button>
+                     <button class="filter-btn" data-day="2">Day 2</button>
+                </div>
+                <div class="schedule-cards-container" id="schedule-cards">
+                    <!-- Schedule cards will be injected by JS -->
+                </div>
+                <h3 style="font-family: var(--font-heading); color: var(--color-secondary); text-align: center; margin-bottom: 30px; font-size: 1.8rem;">Complete Timeline</h3>
+                <div class="table-wrapper">
+                    <table id="schedule-table">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Event</th>
+                                <th>Category</th>
+                            </tr>
+                        </thead>
+                        <tbody id="schedule-body">
+                            <!-- Schedule rows will be injected by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section">
+            <div class="container">
+                <h2 class="section-title">Contact Us</h2>
+                <div class="contact-wrapper">
+                    <div class="contact-info">
+                        <h3>Get In Touch</h3>
+                        <p>Have questions? Reach out to our fest coordinators.</p>
+                        <p><strong>Email:</strong> contact@eventverse.edu</p>
+                        <p><strong>Phone:</strong> +1 234-567-8900</p>
+                        <div class="map-container">
+                             <iframe title="Event Location Map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387191.0361103982!2d-74.30932757341584!3d40.69753995897139!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2sin!4v1676375083812!5m2!1sen!2sin" width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </div>
+                    </div>
+                    <div id="contact-form-container">
+                        <h3>Contact Us</h3>
+                        <div class="form-scroll-container">
+                            <form id="contact-form" novalidate>
+                                <div class="form-group">
+                                    <label for="contact-name">Your Name *</label>
+                                    <input type="text" id="contact-name" name="contact-name" placeholder="Enter your name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="contact-email">Email Address *</label>
+                                    <input type="email" id="contact-email" name="contact-email" placeholder="your.email@example.com" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="contact-phone">Phone Number</label>
+                                    <input type="tel" id="contact-phone" name="contact-phone" placeholder="+1 234-567-8900">
+                                </div>
+                                <div class="form-group">
+                                    <label for="contact-subject">Subject *</label>
+                                    <input type="text" id="contact-subject" name="contact-subject" placeholder="What is this regarding?" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="contact-message">Message *</label>
+                                    <textarea id="contact-message" name="contact-message" rows="6" placeholder="Your message to the coordinators..." required></textarea>
+                                </div>
+                                <button type="submit" class="btn">Send Message</button>
+                                <div id="form-feedback" role="alert"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="event-modal" class="modal" role="dialog" aria-modal="true">
+        <div class="modal-content" id="modal-content">
+            <span class="close-btn" aria-label="Close modal">&times;</span>
+            <!-- Modal content will be injected by JS -->
+        </div>
+    </div>
+    
+    <div id="registration-modal" class="modal" role="dialog" aria-modal="true">
+        <div class="modal-content">
+            <span class="close-btn" aria-label="Close modal">&times;</span>
+            <h2 id="registration-event-title">Event Registration</h2>
+            <form class="registration-form" id="event-registration-form" novalidate>
+                <div class="form-group">
+                    <label for="reg-event">Selected Event *</label>
+                    <input type="text" id="reg-event" name="reg-event" readonly style="background: rgba(0, 255, 255, 0.1); cursor: not-allowed;">
+                </div>
+                <div class="form-group">
+                    <label for="reg-name">Full Name *</label>
+                    <input type="text" id="reg-name" name="reg-name" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-email">Email Address *</label>
+                    <input type="email" id="reg-email" name="reg-email" placeholder="your.email@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-phone">Phone Number *</label>
+                    <input type="tel" id="reg-phone" name="reg-phone" placeholder="+1 234-567-8900" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-college">College/University *</label>
+                    <input type="text" id="reg-college" name="reg-college" placeholder="Enter your institution name" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-participants">Number of Participants *</label>
+                    <select id="reg-participants" name="reg-participants" required>
+                        <option value="">Select number</option>
+                        <option value="1">1 (Solo)</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5+">5 or more</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="reg-year">Year of Study *</label>
+                    <select id="reg-year" name="reg-year" required>
+                        <option value="">Select year</option>
+                        <option value="1st Year">1st Year</option>
+                        <option value="2nd Year">2nd Year</option>
+                        <option value="3rd Year">3rd Year</option>
+                        <option value="4th Year">4th Year</option>
+                        <option value="Graduate">Graduate</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="reg-experience">Previous Tech Fest Experience</label>
+                    <select id="reg-experience" name="reg-experience">
+                        <option value="">Select experience level</option>
+                        <option value="First Time">First Time Participant</option>
+                        <option value="1-2 Events">Attended 1-2 Events</option>
+                        <option value="3-5 Events">Attended 3-5 Events</option>
+                        <option value="Expert">Expert (5+ Events)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="reg-message">Team Members / Additional Info</label>
+                    <textarea id="reg-message" name="reg-message" rows="3" placeholder="Team member names, special requirements..."></textarea>
+                </div>
+                <button type="submit" class="btn">Complete Registration</button>
+                <div id="registration-feedback" role="alert" style="margin-top: 15px; display: none;"></div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- PARTICLE BACKGROUND ---
+            const canvas = document.getElementById('particle-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            let particlesArray;
+
+            class Particle {
+                constructor(x, y, directionX, directionY, size, color) {
+                    this.x = x;
+                    this.y = y;
+                    this.directionX = directionX;
+                    this.directionY = directionY;
+                    this.size = size;
+                    this.color = color;
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                }
+                update() {
+                    if (this.x > canvas.width || this.x < 0) {
+                        this.directionX = -this.directionX;
+                    }
+                    if (this.y > canvas.height || this.y < 0) {
+                        this.directionY = -this.directionY;
+                    }
+                    this.x += this.directionX;
+                    this.y += this.directionY;
+                    this.draw();
+                }
+            }
+            
+            function initParticles() {
+                particlesArray = [];
+                let numberOfParticles = (canvas.height * canvas.width) / 9000;
+                for (let i = 0; i < numberOfParticles; i++) {
+                    let size = (Math.random() * 2) + 1;
+                    let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+                    let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                    let directionX = (Math.random() * .4) - .2;
+                    let directionY = (Math.random() * .4) - .2;
+                    let color = 'rgba(0, 255, 255, 0.5)';
+                    particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
+                }
+            }
+
+            function animateParticles() {
+                requestAnimationFrame(animateParticles);
+                ctx.clearRect(0, 0, innerWidth, innerHeight);
+                for (let i = 0; i < particlesArray.length; i++) {
+                    particlesArray[i].update();
+                }
+            }
+            
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                initParticles();
+            });
+            
+            initParticles();
+            animateParticles();
+            
+            // --- PARTICLE BACKGROUND FOR ABOUT SECTION ---
+            const aboutCanvas = document.getElementById('about-particle-canvas');
+            const aboutCtx = aboutCanvas.getContext('2d');
+            let aboutParticlesArray;
+            
+            function resizeAboutCanvas() {
+                const aboutSection = document.getElementById('about');
+                aboutCanvas.width = aboutSection.offsetWidth;
+                aboutCanvas.height = aboutSection.offsetHeight;
+            }
+            
+            function initAboutParticles() {
+                resizeAboutCanvas();
+                aboutParticlesArray = [];
+                let numberOfParticles = (aboutCanvas.height * aboutCanvas.width) / 9000;
+                for (let i = 0; i < numberOfParticles; i++) {
+                    let size = (Math.random() * 2) + 1;
+                    let x = (Math.random() * ((aboutCanvas.width - size * 2) - (size * 2)) + size * 2);
+                    let y = (Math.random() * ((aboutCanvas.height - size * 2) - (size * 2)) + size * 2);
+                    let directionX = (Math.random() * .4) - .2;
+                    let directionY = (Math.random() * .4) - .2;
+                    let color = 'rgba(255, 0, 255, 0.5)'; // Magenta particles for variety
+                    aboutParticlesArray.push(new Particle(x, y, directionX, directionY, size, color));
+                }
+            }
+            
+            function animateAboutParticles() {
+                requestAnimationFrame(animateAboutParticles);
+                aboutCtx.clearRect(0, 0, aboutCanvas.width, aboutCanvas.height);
+                for (let i = 0; i < aboutParticlesArray.length; i++) {
+                    // Create a temporary particle that uses aboutCtx
+                    const p = aboutParticlesArray[i];
+                    aboutCtx.beginPath();
+                    aboutCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2, false);
+                    aboutCtx.fillStyle = p.color;
+                    aboutCtx.fill();
+                    
+                    // Update position
+                    if (p.x > aboutCanvas.width || p.x < 0) {
+                        p.directionX = -p.directionX;
+                    }
+                    if (p.y > aboutCanvas.height || p.y < 0) {
+                        p.directionY = -p.directionY;
+                    }
+                    p.x += p.directionX;
+                    p.y += p.directionY;
+                }
+            }
+            
+            window.addEventListener('resize', () => {
+                resizeAboutCanvas();
+                initAboutParticles();
+            });
+            
+            initAboutParticles();
+            animateAboutParticles();
+
+            // --- DATA ---
+            const ICONS = {
+                Technical: `<svg aria-hidden="true" class="event-card-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 13.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5zM12 12c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm-7.5-1.5C3.67 10.5 3 11.17 3 12s.67 1.5 1.5 1.5S6 12.83 6 12s-.67-1.5-1.5-1.5zM12 3C8.69 3 6 5.69 6 9c0 2.22 1.21 4.15 3 5.19V20c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-5.81c1.79-1.04 3-2.97 3-5.19 0-3.31-2.69-6-6-6z"/></svg>`,
+                Cultural: `<svg aria-hidden="true" class="event-card-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l-1.45 4.72L6 9.27l3.72 3.45L8.55 18 12 15.42 15.45 18l-1.17-5.28L18 9.27l-4.55-1.55L12 3zm0 4.5c1.38 0 2.5 1.12 2.5 2.5s-1.12 2.5-2.5 2.5-2.5-1.12-2.5-2.5 1.12-2.5 2.5-2.5zM19 19H5v-1.4c0-1.07.54-2.02 1.37-2.61.83-.59 1.87-.99 3.03-1.19C8.36 12.52 8 11.33 8 10c0-2.21 1.79-4 4-4s4 1.79 4 4c0 1.33-.36 2.52-1.4 3.8.1.06.2.12.3.18 1.16.2 2.2.6 3.03 1.19.83.59 1.37 1.54 1.37 2.61V19z"/></svg>`,
+                Gaming: `<svg aria-hidden="true" class="event-card-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M22 6v12H2V6h20zm-2 2h-6v4h6V8zM8 8H4v4h4V8zm2 6H4v2h6v-2zm8 0h-6v2h6v-2z"/></svg>`,
+                Workshop: `<svg aria-hidden="true" class="event-card-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>`
+            };
+            const EVENTS = [
+                { id: 1, day: 1, title: 'Code Genesis', category: 'Technical', time: '10:00 AM', short_description: 'A competitive programming challenge.', description: 'A competitive programming challenge to test your algorithmic skills.', rules: 'Individual participation. Standard coding platforms will be used.', prize: '$500', contact: 'Dr. Smith - 123-456-7890', image: 'https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=600&h=400&fit=crop' },
+                { id: 2, day: 1, title: 'RoboWars', category: 'Technical', time: '01:00 PM', short_description: 'Build and battle robots in a tournament.', description: 'Build and battle robots in a head-to-head tournament.', rules: 'Team of 4. Robot weight must not exceed 15kg.', prize: '$1000', contact: 'Prof. Jones - 123-456-7891', image: 'https://images.unsplash.com/photo-1563207153-f403bf289096?w=600&h=400&fit=crop' },
+                { id: 3, day: 1, title: 'LeetCode Contest', category: 'Technical', time: '04:00 PM', short_description: 'Competitive coding challenges on LeetCode platform.', description: 'Test your problem-solving skills with challenging algorithmic problems on LeetCode.', rules: 'Individual participation. 90-minute contest. Standard LeetCode rules apply.', prize: '$600', contact: 'Prof. Davis - 123-456-7892', image: 'https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=600&h=400&fit=crop' },
+                { id: 4, day: 1, title: 'Pixel Clash', category: 'Gaming', time: '11:00 AM', short_description: 'Esports tournament for popular games.', description: 'Esports tournament featuring popular competitive games.', rules: 'Team and solo events available.', prize: 'Gaming Peripherals', contact: 'GamerX - 123-456-7893', image: 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=600&h=400&fit=crop' },
+                { id: 5, day: 2, title: 'AI & ML Workshop', category: 'Workshop', time: '09:00 AM', short_description: 'Interactive workshop on AI fundamentals.', description: 'An interactive workshop on the fundamentals of Artificial Intelligence.', rules: 'Bring your own laptop. Limited seats.', prize: 'N/A', contact: 'Dr. Eva - 123-456-7894', image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&h=400&fit=crop' },
+                { id: 6, day: 2, title: 'Web Weavers', category: 'Technical', time: '12:00 PM', short_description: 'A hackathon for innovative web solutions.', description: 'A hackathon focused on creating innovative web solutions.', rules: 'Team of 2-4. 24-hour event.', prize: '$800', contact: 'Mr. Web - 123-456-7895', image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&h=400&fit=crop' },
+                { id: 7, day: 2, title: 'Step Up', category: 'Cultural', time: '03:00 PM', short_description: 'Dance competition for solo and group acts.', description: 'A dance competition for solo and group performers.', rules: 'Time limits apply for each category.', prize: 'Trophies and Cash Prize', contact: 'Dance Co. - 123-456-7896', image: 'https://images.unsplash.com/photo-1504609813442-a8924e83f76e?w=600&h=400&fit=crop' },
+                { id: 8, day: 2, title: 'VR Experience Zone', category: 'Gaming', time: '10:00 AM', short_description: 'Explore virtual reality with cutting-edge tech.', description: 'Explore the world of virtual reality with cutting-edge headsets.', rules: 'Open for all attendees.', prize: 'N/A', contact: 'VR World - 123-456-7897', image: 'https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?w=600&h=400&fit=crop' }
+            ];
+
+            // --- DOM ELEMENTS ---
+            const eventGrid = document.getElementById('event-grid');
+            const filterBar = document.getElementById('filter-bar');
+            const sortEventsSelect = document.getElementById('sort-events');
+            const scheduleFilterBar = document.getElementById('schedule-filter-bar');
+            const scheduleBody = document.getElementById('schedule-body');
+            const scheduleCards = document.getElementById('schedule-cards');
+            const modal = document.getElementById('event-modal');
+            const modalContent = document.getElementById('modal-content');
+            const contactForm = document.getElementById('contact-form');
+            const formFeedback = document.getElementById('form-feedback');
+
+            // --- RENDER FUNCTIONS ---
+            const renderEvents = () => {
+                const filter = filterBar.querySelector('.active').dataset.filter;
+                const sortBy = sortEventsSelect.value;
+                
+                eventGrid.innerHTML = '';
+                
+                let eventsToRender = (filter === 'all')
+                    ? [...EVENTS]
+                    : EVENTS.filter(event => event.category === filter);
+
+                if (sortBy === 'name-asc') {
+                    eventsToRender.sort((a, b) => a.title.localeCompare(b.title));
+                } else if (sortBy === 'time-asc') {
+                    eventsToRender.sort((a,b) => `${a.day}${a.time}`.localeCompare(`${b.day}${b.time}`));
+                }
+
+                eventsToRender.forEach(event => {
+                    const card = document.createElement('div');
+                    card.className = 'event-card';
+                    card.dataset.eventId = event.id.toString();
+                    card.setAttribute('role', 'button');
+                    card.setAttribute('tabindex', '0');
+                    card.innerHTML = `
+                        <div class="event-card-header">
+                            ${ICONS[event.category] || ''}
+                            <div class="event-card-info">
+                                <h3>${event.title}</h3>
+                                <span>${event.category} | Day ${event.day} | ${event.time}</span>
+                            </div>
+                        </div>
+                        <p>${event.short_description}</p>
+                    `;
+                    eventGrid.appendChild(card);
+                });
+            };
+            
+            const EVENT_ICONS_EMOJI = {
+                Technical: '💻',
+                Cultural: '🎭',
+                Gaming: '🎮',
+                Workshop: '🎓'
+            };
+            
+            const renderSchedule = (day = 1) => {
+                // Render schedule cards
+                scheduleCards.innerHTML = '';
+                const dayEvents = EVENTS.filter(event => event.day == day)
+                                        .sort((a,b) => a.time.localeCompare(b.time));
+
+                dayEvents.forEach(event => {
+                    const card = document.createElement('div');
+                    card.className = 'schedule-card';
+                    card.innerHTML = `
+                        <div class="schedule-card-poster">
+                            <img src="${event.image}" alt="${event.title} poster" loading="lazy">
+                        </div>
+                        <div class="schedule-card-content">
+                            <h3 class="schedule-card-title">${event.title}</h3>
+                            <div class="schedule-card-info">
+                                <div class="schedule-card-info-item">
+                                    <strong>Time:</strong>
+                                    <span>${event.time}</span>
+                                </div>
+                                <div class="schedule-card-info-item">
+                                    <strong>Day:</strong>
+                                    <span>Day ${event.day}</span>
+                                </div>
+                            </div>
+                            <span class="schedule-card-badge">${event.category}</span>
+                        </div>
+                    `;
+                    scheduleCards.appendChild(card);
+                });
+                
+                // Render schedule table
+                scheduleBody.innerHTML = '';
+                dayEvents.forEach(event => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${event.time}</td>
+                        <td>${event.title}</td>
+                        <td>${event.category}</td>
+                    `;
+                    scheduleBody.appendChild(row);
+                });
+            };
+
+            // --- MODAL FUNCTIONS ---
+            const openModal = (eventId) => {
+                const event = EVENTS.find(e => e.id == parseInt(eventId, 10));
+                if (!event) return;
+
+                modalContent.innerHTML = `
+                    <button class="close-btn" aria-label="Close modal">&times;</button>
+                    <h2>${event.title}</h2>
+                    <p><strong>Category:</strong> ${event.category} | <strong>Time:</strong> ${event.time}</p>
+                    <h3>Description</h3>
+                    <p>${event.description}</p>
+                    <h3>Rules</h3>
+                    <p>${event.rules}</p>
+                    <h3>Prize Pool</h3>
+                    <p>${event.prize}</p>
+                    <h3>Contact Person</h3>
+                    <p>${event.contact}</p>
+                    <div class="modal-actions">
+                         <button class="btn btn-secondary open-registration-modal" data-event-id="${event.id}">Register for this Event</button>
+                    </div>
+                `;
+                modal.classList.add('show');
+                modal.querySelector('.close-btn').focus();
+                
+                modal.querySelector('.close-btn').addEventListener('click', closeModal);
+                
+                const registerButton = modal.querySelector('.open-registration-modal');
+                registerButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const eventId = e.target.dataset.eventId;
+                    openRegistrationModal(parseInt(eventId));
+                });
+            };
+
+            const closeModal = () => {
+                modal.classList.remove('show');
+            };
+            
+            // --- REGISTRATION MODAL FUNCTIONS ---
+            const registrationModal = document.getElementById('registration-modal');
+            const regForm = document.getElementById('event-registration-form');
+            const regFeedback = document.getElementById('registration-feedback');
+            const regEventInput = document.getElementById('reg-event');
+            const regEventTitle = document.getElementById('registration-event-title');
+            let currentRegistrationEvent = null;
+            
+            const openRegistrationModal = (eventId) => {
+                const event = EVENTS.find(e => e.id === eventId);
+                if (!event) return;
+                
+                currentRegistrationEvent = event;
+                regEventInput.value = event.title;
+                regEventTitle.textContent = `Register for ${event.title}`;
+                
+                // Close event details modal
+                closeModal();
+                
+                // Open registration modal
+                registrationModal.classList.add('show');
+                registrationModal.querySelector('.close-btn').focus();
+            };
+            
+            const closeRegistrationModal = () => {
+                registrationModal.classList.remove('show');
+                regForm.reset();
+                regFeedback.style.display = 'none';
+                currentRegistrationEvent = null;
+            };
+            
+            // Registration modal close button
+            registrationModal.querySelector('.close-btn').addEventListener('click', closeRegistrationModal);
+            
+            // Close registration modal on outside click
+            registrationModal.addEventListener('click', (e) => {
+                if (e.target === registrationModal) {
+                    closeRegistrationModal();
+                }
+            });
+            
+            // Close registration modal on Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && registrationModal.classList.contains('show')) {
+                    closeRegistrationModal();
+                }
+            });
+            
+            // Registration form submission
+            regForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const name = document.getElementById('reg-name').value;
+                const email = document.getElementById('reg-email').value;
+                const phone = document.getElementById('reg-phone').value;
+                const college = document.getElementById('reg-college').value;
+                const participants = document.getElementById('reg-participants').value;
+                const year = document.getElementById('reg-year').value;
+                
+                if (name.trim() === '' || email.trim() === '' || phone.trim() === '' || 
+                    college.trim() === '' || participants === '' || year === '') {
+                    alert('Please fill out all required fields marked with *');
+                    return;
+                }
+                
+                if (!/^\S+@\S+\.\S+$/.test(email)) {
+                    alert('Please enter a valid email address.');
+                    return;
+                }
+                
+                if (!/^[\d\s\-\+\(\)]+$/.test(phone)) {
+                    alert('Please enter a valid phone number.');
+                    return;
+                }
+                
+                regFeedback.textContent = `Registration Successful for ${currentRegistrationEvent.title}! Check your email for confirmation.`;
+                regFeedback.className = 'success';
+                regFeedback.style.display = 'block';
+                regFeedback.style.backgroundColor = 'rgba(0, 255, 255, 0.2)';
+                regFeedback.style.color = 'var(--color-primary)';
+                regFeedback.style.border = '1px solid var(--color-primary)';
+                regFeedback.style.padding = '15px';
+                regFeedback.style.textAlign = 'center';
+                regForm.reset();
+                regEventInput.value = currentRegistrationEvent.title;
+                
+                setTimeout(() => {
+                    regFeedback.style.display = 'none';
+                }, 5000);
+            });
+
+            // --- EVENT LISTENERS ---
+            filterBar.addEventListener('click', (e) => {
+                const target = e.target;
+                if (target.tagName === 'BUTTON') {
+                    filterBar.querySelector('.active').classList.remove('active');
+                    target.classList.add('active');
+                    renderEvents();
+                }
+            });
+            
+            sortEventsSelect.addEventListener('change', renderEvents);
+
+            scheduleFilterBar.addEventListener('click', (e) => {
+                const target = e.target;
+                if (target.tagName === 'BUTTON') {
+                    scheduleFilterBar.querySelector('.active').classList.remove('active');
+                    target.classList.add('active');
+                    renderSchedule(target.dataset.day);
+                }
+            });
+
+            eventGrid.addEventListener('click', (e) => {
+                const card = e.target.closest('.event-card');
+                if (card) {
+                    openModal(card.dataset.eventId);
+                }
+            });
+             eventGrid.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    const card = e.target.closest('.event-card');
+                    if (card) {
+                        e.preventDefault();
+                        openModal(card.dataset.eventId);
+                    }
+                }
+            });
+            
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+             document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.classList.contains('show')) {
+                    closeModal();
+                }
+            });
+
+            contactForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const name = document.getElementById('contact-name').value;
+                const email = document.getElementById('contact-email').value;
+                const subject = document.getElementById('contact-subject').value;
+                const message = document.getElementById('contact-message').value;
+                
+                // Validation
+                if (name.trim() === '' || email.trim() === '' || subject.trim() === '' || message.trim() === '') {
+                    alert('Please fill out all required fields marked with *');
+                    return;
+                }
+
+                if (!/^\S+@\S+\.\S+$/.test(email)) {
+                    alert('Please enter a valid email address.');
+                    return;
+                }
+                
+                formFeedback.textContent = 'Message sent successfully! Our coordinators will get back to you soon.';
+                formFeedback.className = 'success';
+                formFeedback.style.display = 'block';
+                contactForm.reset();
+                
+                setTimeout(() => {
+                   formFeedback.style.display = 'none';
+                }, 5000);
+            });
+            
+            // --- NEW NAVIGATION LOGIC ---
+            const navContainer = document.querySelector('.main-nav');
+            const navLinks = document.querySelectorAll('.main-nav a');
+            const sections = document.querySelectorAll('main > .section');
+            const logoLink = document.querySelector('.logo');
+            const heroButton = document.querySelector('.hero-content .btn');
+
+            function navigateTo(targetId) {
+                // Hide all sections
+                sections.forEach(section => {
+                    section.style.display = 'none';
+                });
+
+                // Show target section
+                const targetSection = document.querySelector(targetId);
+                if (targetSection) {
+                    // Home section has a special display property
+                    targetSection.style.display = (targetId === '#home') ? 'flex' : 'block';
+                }
+                
+                // Show about section only when home is active
+                const aboutSection = document.getElementById('about');
+                if (targetId === '#home') {
+                    aboutSection.style.display = 'block';
+                    // Reinitialize about particles when showing
+                    setTimeout(() => {
+                        resizeAboutCanvas();
+                        initAboutParticles();
+                    }, 100);
+                } else {
+                    aboutSection.style.display = 'none';
+                }
+                
+                // Update active nav link
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === targetId) {
+                        link.classList.add('active');
+                    }
+                });
+
+                window.scrollTo(0, 0);
+            }
+            
+            // Add click listeners for all navigation elements
+            navContainer.addEventListener('click', (e) => {
+                if (e.target.tagName === 'A') {
+                    e.preventDefault();
+                    navigateTo(e.target.getAttribute('href'));
+                }
+            });
+
+            logoLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                navigateTo('#home');
+            });
+
+            heroButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                navigateTo('#events');
+            });
+
+
+            // --- INITIALIZATION ---
+            navigateTo('#home'); // Set the initial page to Home
+            // Show about section when on home page
+            document.getElementById('about').style.display = 'block';
+            renderEvents();
+            renderSchedule();
+        });
+    </script>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>
